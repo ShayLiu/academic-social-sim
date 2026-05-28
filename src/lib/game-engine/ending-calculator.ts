@@ -1,0 +1,151 @@
+import type { Ending, PlayerState } from '../../types/game'
+
+/**
+ * 结局计算器。
+ * 根据玩家最终状态匹配最佳结局，计算生存分。
+ */
+export class EndingCalculator {
+  private endings: Ending[]
+
+  constructor(endings: Ending[]) {
+    // 按 priority 降序排列，高优先级先匹配
+    this.endings = [...endings].sort((a, b) => b.priority - a.priority)
+  }
+
+  /** 根据最终 PlayerState 匹配最佳结局 */
+  calculateEnding(playerState: PlayerState): Ending {
+    for (const ending of this.endings) {
+      if (this.matchesConditions(ending, playerState)) {
+        return ending
+      }
+    }
+
+    // 兜底结局：如果没有任何条件匹配，返回最后一个（最低优先级的通用结局）
+    return this.endings[this.endings.length - 1]
+  }
+
+  /** 检查玩家状态是否满足某结局的全部条件 */
+  private matchesConditions(ending: Ending, playerState: PlayerState): boolean {
+    const c = ending.conditions
+
+    if (c.minConsistency !== undefined && playerState.consistency < c.minConsistency) {
+      return false
+    }
+    if (c.maxConsistency !== undefined && playerState.consistency > c.maxConsistency) {
+      return false
+    }
+    if (c.minEnergy !== undefined && playerState.emotionalEnergy < c.minEnergy) {
+      return false
+    }
+    if (c.maxEnergy !== undefined && playerState.emotionalEnergy > c.maxEnergy) {
+      return false
+    }
+
+    // 必须触发的地雷
+    if (c.requiredMines) {
+      for (const mineId of c.requiredMines) {
+        if (!playerState.triggeredMines.includes(mineId)) {
+          return false
+        }
+      }
+    }
+
+    // 不能触发的地雷
+    if (c.forbiddenMines) {
+      for (const mineId of c.forbiddenMines) {
+        if (playerState.triggeredMines.includes(mineId)) {
+          return false
+        }
+      }
+    }
+
+    // 必须暴露的信息
+    if (c.requiredExposures) {
+      for (const infoId of c.requiredExposures) {
+        if (!playerState.exposedInfo.includes(infoId)) {
+          return false
+        }
+      }
+    }
+
+    // 要求特定角色的态度
+    if (c.requiredAttitudes) {
+      for (const req of c.requiredAttitudes) {
+        if (playerState.attitudes[req.characterId] !== req.attitude) {
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
+  /**
+   * 计算生存分 (0-100)。
+   * 综合考虑一致性、能量、地雷触发比例、信息暴露情况等。
+   */
+  calculateSurvivalScore(playerState: PlayerState): number {
+    // 一致性权重 30%
+    const consistencyScore = playerState.consistency * 0.3
+
+    // 能量权重 20%
+    const energyScore = playerState.emotionalEnergy * 0.2
+
+    // 地雷触发惩罚权重 25% (触发越少越好)
+    // 没有地雷数据时给满分
+    const mineTriggeredCount = playerState.triggeredMines.length
+    // 假设总数通过外部传入，这里用触发数的反向计算
+    // 每触发一个扣 8 分，最多扣 25 分
+    const mineScore = Math.max(0, 25 - mineTriggeredCount * 8)
+
+    // 矛盾次数惩罚权重 15%
+    const contradictionCount = playerState.contradictions.length
+    const contradictionScore = Math.max(0, 15 - contradictionCount * 5)
+
+    // 态度评分权重 10% (friendly +10, neutral +5, wary +2, hostile 0)
+    const attitudeValues: Record<string, number> = {
+      friendly: 10,
+      neutral: 5,
+      wary: 2,
+      hostile: 0,
+    }
+    const attitudes = Object.values(playerState.attitudes)
+    const attitudeAvg =
+      attitudes.length > 0
+        ? attitudes.reduce(
+            (sum, att) => sum + (attitudeValues[att] ?? 0),
+            0
+          ) / attitudes.length
+        : 5
+    const attitudeScore = attitudeAvg
+
+    const total = Math.round(
+      consistencyScore + energyScore + mineScore + contradictionScore + attitudeScore
+    )
+
+    return Math.max(0, Math.min(100, total))
+  }
+
+  /** 根据结局和玩家状态生成一句话总结 */
+  generateImpressionSummary(ending: Ending, playerState: PlayerState): string {
+    const score = this.calculateSurvivalScore(playerState)
+
+    if (playerState.emotionalEnergy <= 0) {
+      return `你在学术社交的压力下彻底崩溃了。${ending.name}——这或许就是大多数人不愿说出口的结局。`
+    }
+
+    if (score >= 80) {
+      return `你在这场学术社交中游刃有余，${ending.name}。众人对你印象深刻，但没人知道你内心也在演戏。`
+    }
+
+    if (score >= 60) {
+      return `你勉强撑过了这场局面，${ending.name}。有些话说对了，有些话不该说——但至少你还站着。`
+    }
+
+    if (score >= 40) {
+      return `${ending.name}。你的表现引起了一些人的怀疑，好在学术圈的记忆并不长久——或者说，不会当面提起。`
+    }
+
+    return `${ending.name}。你在这场社交中留下了不少把柄，而学术圈最不缺的就是记忆力好的人。`
+  }
+}
