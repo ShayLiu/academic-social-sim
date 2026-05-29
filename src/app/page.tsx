@@ -21,7 +21,7 @@ export default function HomePage() {
       <nav className="flex items-center justify-between px-6 py-3 border-b border-surface-lighter">
         <span className="text-sm font-medium text-text-primary">学术社交模拟器</span>
         <div className="flex items-center gap-4">
-          <Link href="/pricing" className="text-xs text-text-muted hover:text-text-secondary">定价</Link>
+          <Link href="/scenarios" className="text-xs text-text-muted hover:text-text-secondary">全部场景</Link>
         </div>
       </nav>
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-16">
