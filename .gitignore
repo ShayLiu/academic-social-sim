@@ -11,3 +11,4 @@ next-env.d.ts
 ssl/
 .claude/
 ._*
+.vercel

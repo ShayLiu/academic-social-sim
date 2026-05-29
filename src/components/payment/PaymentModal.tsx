@@ -45,15 +45,8 @@ export function PaymentModal({
 
         setOrderNo(data.orderNo)
 
-        if (channel === 'alipay' && data.formHtml) {
-          const win = window.open('', '_blank')
-          if (win) {
-            win.document.write(data.formHtml)
-            win.document.close()
-          }
-          setPolling(true)
-        } else if (channel === 'wechat' && data.codeUrl) {
-          window.open(data.codeUrl, '_blank')
+        if (data.payUrl) {
+          window.open(data.payUrl, '_blank')
           setPolling(true)
         }
       } catch (err: any) {
@@ -141,9 +134,18 @@ export function PaymentModal({
                 />
                 <span className="text-sm text-text-secondary">等待支付完成...</span>
               </div>
-              <p className="text-xs text-text-muted">
+              <p className="text-xs text-text-muted mt-2">
+                已在新窗口打开支付页面
+              </p>
+              <p className="text-xs text-text-muted mt-1">
                 订单号: {orderNo}
               </p>
+              <button
+                onClick={() => { setPolling(false); setOrderNo(null) }}
+                className="mt-4 text-xs text-text-muted hover:text-text-secondary underline"
+              >
+                重新选择支付方式
+              </button>
             </div>
           ) : (
             <div className="space-y-3">
