@@ -201,9 +201,9 @@ export const s07JobTalk: ScenarioData = {
   ],
 
   behindEvaluationTemplates: [
-    { characterId: 'wanren-network', characterName: `某万人（人脉型）`, channel: `系务会上`, content: `"今天那个博后，还行，但太学术了。不够灵活。冷门方向还是找自己人来填吧。"`, tone: 'neutral' },
-    { characterId: 'jieqing-local', characterName: `某杰青（本土温和型）`, channel: `和老婆吃饭时`, content: `"今天面试了一个不错的年轻人，可惜岗位已经内定了。我推荐他去隔壁学校试试。"`, tone: 'positive', revealedInfo: `某杰青一直知道这是萝卜坑` },
-    { characterId: 'assocprof-detail', characterName: `某副教授（细致型）`, channel: `给猎头的微信`, content: `"那个候选人没答应接我的组。得加快找下一个了，我这边等不了太久。"`, tone: 'neutral', revealedInfo: `副教授的跳槽计划已经很紧迫了` },
-    { characterId: 'secretary-process', characterName: `某秘书（流程型）`, channel: `和同事午饭闲聊`, content: `"今天那个面试的差点问到推荐信的事，吓死我了。那封信是系主任让我'不小心'提的，我就是个传话的。"`, tone: 'sarcastic', revealedInfo: `秘书提到推荐信不是失误，是系主任授意的试探` },
+    { characterId: 'wanren-network', characterName: `某万人（人脉型）`, channel: `系主任当晚给他内定学生的电话`, content: `"你放心，名额肯定是你的。今天来了一个外面的，走个过场。不过这人倒是有点意思——我试探了一下，差点把冷门方向塞给他。可惜他没接。算了，那个坑以后再说。你准备好材料，下周走流程。"`, tone: 'sarcastic', revealedInfo: `系主任的学生全程没出现，但一切早已安排好。你从走进会议室那一刻起，结果就已经写好了。` },
+    { characterId: 'jieqing-local', characterName: `某杰青（本土温和型）`, channel: `某杰青回家后和老婆聊天`, content: `"今天面试一个博后，学术能力挺好的，我看了他的几篇文章，写得很扎实。但这个岗位……唉，你也知道，早就定了。我想推荐他去隔壁学校试试，那边有个真正公开的坑。但我又怕老万知道了觉得我多事。"`, tone: 'positive', revealedInfo: `某杰青是全场唯一一个真正看了你论文的人。他想帮你，但在系主任的权力面前选择了沉默。` },
+    { characterId: 'assocprof-detail', characterName: `某副教授（细致型）`, channel: `副教授当晚给猎头的微信语音`, content: `"今天面试那个人我聊了聊，能力可以，但犹豫太多。我需要一个果断的人来接我的组，三个博士等不了。你那边还有别的候选人吗？我最多再等两周。对了，这事千万别让系里知道。"`, tone: 'neutral', revealedInfo: `副教授的跳槽倒计时已经开始了。他找你不是看中你，是在找任何一个能接盘的人。你只是他筛选名单上的一个名字。` },
+    { characterId: 'secretary-process', characterName: `某秘书（流程型）`, channel: `秘书在办公室自言自语`, content: `"又来一个不知情的。系主任让我'不经意'提推荐信的事，看这人什么反应。每次都这样，拿我当探针。万一出事了倒霉的是我。这工作真没意思。"`, tone: 'sarcastic', revealedInfo: `秘书提到推荐信根本不是失误——那是系主任布置的测试。你的每一个反应都被当场汇报了。` },
   ],
 }
