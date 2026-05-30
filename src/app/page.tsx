@@ -50,20 +50,12 @@ export default function HomePage() {
             学术社交模拟器
           </motion.h1>
           <motion.p
-            className="text-lg text-text-secondary shimmer"
+            className="text-sm text-text-muted mt-3 max-w-md mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            没有正确答案，只有不同代价的输法
-          </motion.p>
-          <motion.p
-            className="text-sm text-text-muted mt-3 max-w-md mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-          >
-            覆盖中国学术圈全生命周期的社交生存训练。从保研面试到院士博弈，每个场景都是修罗场。
+            从保研面试到院士博弈，每个场景都是修罗场
           </motion.p>
         </motion.div>
 

@@ -14,16 +14,16 @@ const faqs = [
     a: '因为现实就没有正确答案。每个选择都是在不同利益之间权衡。我们提供的是训练你在压力下做出判断的能力，而不是背诵话术。',
   },
   {
-    q: '免费用户能体验多少？',
-    a: '每月5次场景体验，通关后可查看简版报告（结局+生存分+一句话评价）。解锁完整诊断报告需要购买。',
+    q: '可以反复游玩吗？',
+    a: '可以。每个场景都有多条分支和多种结局，不同选择会解锁不同的身后评价和隐藏信息。',
   },
   {
     q: '数据安全吗？',
-    a: '你的游戏数据存储在加密数据库中，我们不会向任何第三方分享。你的社交惨败只有你自己知道。',
+    a: '游戏数据仅存储在你的浏览器中，不会上传到任何服务器。你的社交惨败只有你自己知道。',
   },
   {
     q: '可以扮演导师/院士吗？',
-    a: 'Pro用户可以切换视角，体验权力端的社交博弈。是的，你可以当那个让学生难受的人。',
+    a: '部分场景支持切换视角，体验权力端的社交博弈。是的，你可以当那个让学生难受的人。',
   },
 ]
 
@@ -38,7 +38,7 @@ export function FAQ() {
           {faqs.map((item) => (
             <div
               key={item.q}
-              className="p-4 rounded-lg bg-surface-light border border-surface-lighter"
+              className="card-game p-4 rounded-xl"
             >
               <p className="text-sm font-medium text-text-primary">{item.q}</p>
               <p className="text-xs text-text-muted mt-1.5 leading-relaxed">{item.a}</p>
