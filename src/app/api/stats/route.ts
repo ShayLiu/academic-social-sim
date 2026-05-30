@@ -1,9 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { kv } from '@vercel/kv'
+import { Redis } from '@upstash/redis'
+import { NextResponse } from 'next/server'
+
+const redis = Redis.fromEnv()
 
 export async function GET() {
   try {
-    const count = (await kv.get<number>('play_count')) || 0
+    const count = (await redis.get<number>('play_count')) || 0
     return NextResponse.json({ count })
   } catch {
     return NextResponse.json({ count: 0 })
@@ -12,7 +14,7 @@ export async function GET() {
 
 export async function POST() {
   try {
-    const count = await kv.incr('play_count')
+    const count = await redis.incr('play_count')
     return NextResponse.json({ count })
   } catch {
     return NextResponse.json({ count: 0 })
