@@ -14,12 +14,12 @@ const phases: { phase: AcademicPhase; desc: string; icon: string; color: string 
 ]
 
 const features = [
-  { icon: '🧵', title: '多线程对话', desc: '同时应对多个角色，顾此失彼' },
-  { icon: '🔍', title: '信息差博弈', desc: '你不知道的秘密随时可能暴露' },
-  { icon: '💣', title: '社交地雷', desc: '踩中禁忌，全场安静' },
-  { icon: '🎭', title: '一致性追踪', desc: '前后矛盾会被发现' },
-  { icon: '⚡', title: '情绪能量', desc: '能量耗尽，情绪失控' },
-  { icon: '👁️', title: '身后评价', desc: '你看不到的背后议论' },
+  { icon: '🧵', title: '多线程对话', desc: '三个人同时找你，只能回一个，另外两个在生气' },
+  { icon: '🔍', title: '信息差', desc: '导师知道你不知道的事，你知道导师不知道你知道' },
+  { icon: '💣', title: '社交地雷', desc: '有些话说出口的瞬间，空气就凝固了' },
+  { icon: '🎭', title: '一致性', desc: '"你上次可不是这么说的"' },
+  { icon: '⚡', title: '情绪值', desc: '忍到最后忍不住了，选项变成：哭/怼/摔门走人' },
+  { icon: '👁️', title: '身后评价', desc: '你走后他们在群里聊了什么，你永远不知道' },
 ]
 
 export default function HomePage() {
@@ -55,7 +55,7 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            从保研面试到院士博弈，每个场景都是修罗场
+            你说的每句话都有人记着，你不知道的事别人都知道
           </motion.p>
         </motion.div>
 
@@ -127,9 +127,9 @@ export default function HomePage() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            六大核心机制
+            玩法
           </motion.h2>
-          <p className="text-sm text-text-muted text-center mb-12">不是选择题训练，是修罗场生存模拟</p>
+          <p className="text-sm text-text-muted text-center mb-12">学术圈的社交不是选择题，是活人跟活人过招</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {features.map((f, idx) => (
               <motion.div
@@ -151,7 +151,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="text-center py-8 text-xs text-text-muted border-t border-surface-lighter/30">
-        学术社交模拟器 · 不是社交礼仪教学，是学术生存压力模拟器
+        学术社交模拟器
       </footer>
     </div>
   )
