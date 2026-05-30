@@ -11,9 +11,9 @@ const config: Config = {
     extend: {
       colors: {
         academic: {
-          blue: '#1a3a5c',
-          'blue-light': '#2a5a8c',
-          'blue-dark': '#0d1f33',
+          blue: '#2563eb',
+          'blue-light': '#60a5fa',
+          'blue-dark': '#1d4ed8',
         },
         danger: {
           DEFAULT: '#dc2626',
@@ -21,13 +21,13 @@ const config: Config = {
           glow: '#ef4444',
         },
         mine: {
-          gold: '#b8860b',
-          dark: '#8b6508',
+          gold: '#f59e0b',
+          dark: '#b45309',
         },
         surface: {
-          DEFAULT: '#1a1a2e',
-          light: '#25253e',
-          lighter: '#2d2d4a',
+          DEFAULT: '#0d0d1a',
+          light: '#151528',
+          lighter: '#1e1e38',
         },
         text: {
           primary: '#e8e8f0',
@@ -60,16 +60,24 @@ const config: Config = {
           '0%': { backgroundColor: 'rgba(220, 38, 38, 0.6)' },
           '100%': { backgroundColor: 'rgba(220, 38, 38, 0)' },
         },
-        'typewriter': {
-          'from': { width: '0' },
-          'to': { width: '100%' },
-        },
         heartbeat: {
           '0%, 100%': { transform: 'scale(1)' },
           '14%': { transform: 'scale(1.1)' },
           '28%': { transform: 'scale(1)' },
           '42%': { transform: 'scale(1.1)' },
           '56%': { transform: 'scale(1)' },
+        },
+        'glow-pulse': {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(59, 130, 246, 0.3)' },
+          '50%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.6)' },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-4px)' },
+        },
+        'score-ring': {
+          '0%': { strokeDashoffset: '283' },
+          '100%': { strokeDashoffset: 'var(--target-offset)' },
         },
       },
       animation: {
@@ -78,6 +86,8 @@ const config: Config = {
         'urgency-pulse': 'urgency-pulse 2s ease-in-out infinite',
         'flash-red': 'flash-red 0.5s ease-out',
         heartbeat: 'heartbeat 1.5s ease-in-out infinite',
+        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+        'float': 'float 3s ease-in-out infinite',
       },
     },
   },

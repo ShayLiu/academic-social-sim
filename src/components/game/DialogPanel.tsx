@@ -22,11 +22,14 @@ interface DialogPanelProps {
   isWaitingForChoice: boolean
 }
 
-export function DialogPanel({
-  messages,
-  currentNode,
-  isWaitingForChoice,
-}: DialogPanelProps) {
+const attitudeBarColor: Record<CharacterAttitude, string> = {
+  friendly: 'bg-emerald-400',
+  neutral: 'bg-gray-400',
+  wary: 'bg-yellow-400',
+  hostile: 'bg-red-500',
+}
+
+export function DialogPanel({ messages, currentNode, isWaitingForChoice }: DialogPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,21 +40,15 @@ export function DialogPanel({
 
   return (
     <div className="flex flex-col h-full">
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-thin"
-      >
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3 scrollbar-thin">
         <AnimatePresence initial={false}>
           {messages.map((msg, idx) => (
             <motion.div
               key={msg.nodeId + '-' + idx}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 15, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.3 }}
-              className={cn(
-                'flex gap-3',
-                msg.isPlayer ? 'flex-row-reverse' : 'flex-row'
-              )}
+              className={cn('flex gap-3', msg.isPlayer ? 'flex-row-reverse' : 'flex-row')}
             >
               {!msg.isPlayer && (
                 <CharacterAvatar
@@ -62,30 +59,31 @@ export function DialogPanel({
                   size="sm"
                 />
               )}
-              <div
-                className={cn(
-                  'max-w-[75%] rounded-lg px-3 py-2',
-                  msg.isPlayer
-                    ? 'bg-academic-blue text-white'
-                    : 'bg-surface-lighter text-text-primary'
-                )}
-              >
+              <div className={cn('flex max-w-[75%]', msg.isPlayer ? 'flex-row-reverse' : 'flex-row')}>
                 {!msg.isPlayer && (
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-medium text-text-secondary">
-                      {msg.speakerName}
-                    </span>
-                    {msg.emotion && (
-                      <span className="text-xs text-text-muted">
-                        [{msg.emotion}]
-                      </span>
-                    )}
-                  </div>
+                  <div className={cn('attitude-bar mr-2 flex-shrink-0', attitudeBarColor[msg.attitude])} />
                 )}
-                <p className="text-sm leading-relaxed">{msg.text}</p>
+                <div className={cn(
+                  'rounded-xl px-4 py-2.5',
+                  msg.isPlayer
+                    ? 'bg-academic-blue/80 text-white border border-academic-blue/30'
+                    : 'bg-surface-lighter/80 text-text-primary border border-surface-lighter'
+                )}>
+                  {!msg.isPlayer && (
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-bold text-text-secondary">{msg.speakerName}</span>
+                      {msg.emotion && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-surface-lighter text-text-muted">
+                          {msg.emotion}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                  <p className="text-sm leading-relaxed">{msg.text}</p>
+                </div>
               </div>
               {msg.isPlayer && (
-                <div className="w-8 h-8 rounded-full bg-academic-blue flex items-center justify-center text-xs text-white font-medium flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-academic-blue/80 flex items-center justify-center text-xs text-white font-bold flex-shrink-0 border border-academic-blue/30">
                   你
                 </div>
               )}
@@ -104,13 +102,9 @@ export function DialogPanel({
               {[0, 1, 2].map((i) => (
                 <motion.div
                   key={i}
-                  className="w-1.5 h-1.5 rounded-full bg-text-muted"
-                  animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{
-                    duration: 1.2,
-                    repeat: Infinity,
-                    delay: i * 0.2,
-                  }}
+                  className="w-1.5 h-1.5 rounded-full bg-academic-blue-light"
+                  animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
+                  transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
                 />
               ))}
             </div>

@@ -23,74 +23,51 @@ interface GameLayoutProps {
 }
 
 export function GameLayout({
-  phase,
-  scenarioTitle,
-  energy,
-  totalTime,
-  elapsedTime,
-  isPaused,
-  threadPanel,
-  dialogPanel,
-  choicePanel,
-  intelPanel,
-  overlay,
-  onPause,
-  onResume,
+  phase, scenarioTitle, energy, totalTime, elapsedTime, isPaused,
+  threadPanel, dialogPanel, choicePanel, intelPanel, overlay,
+  onPause, onResume,
 }: GameLayoutProps) {
   return (
-    <div className="h-screen w-screen bg-surface flex flex-col overflow-hidden">
+    <div className="h-screen w-screen flex flex-col overflow-hidden">
       {/* 顶部状态栏 */}
-      <header className="flex-shrink-0 h-12 border-b border-surface-lighter bg-surface-light px-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <span className="text-xs px-2 py-0.5 rounded bg-academic-blue/20 text-academic-blue-light font-medium">
+      <header className="flex-shrink-0 h-14 border-b border-surface-lighter/50 bg-surface-light/80 backdrop-blur-sm px-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] px-2.5 py-1 rounded-full bg-academic-blue/20 text-academic-blue-light font-bold uppercase tracking-wider border border-academic-blue/20">
             {PHASE_LABELS[phase]}
           </span>
-          <span className="text-sm text-text-primary font-medium">
-            {scenarioTitle}
-          </span>
+          <span className="text-sm text-text-primary font-bold">{scenarioTitle}</span>
         </div>
-        <div className="flex items-center gap-4 flex-1 max-w-md mx-8">
+        <div className="flex items-center gap-4 flex-1 max-w-lg mx-8">
           <EnergyBar energy={energy} />
         </div>
         <div className="flex items-center gap-3">
-          <GameTimer
-            totalSeconds={totalTime}
-            elapsedSeconds={elapsedTime}
-            isPaused={isPaused}
-          />
+          <GameTimer totalSeconds={totalTime} elapsedSeconds={elapsedTime} isPaused={isPaused} />
           <button
             onClick={isPaused ? onResume : onPause}
-            className="text-xs px-2 py-1 rounded border border-surface-lighter text-text-secondary hover:bg-surface-lighter transition-colors"
+            className={cn(
+              'text-xs px-3 py-1.5 rounded-lg border transition-all',
+              isPaused
+                ? 'border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10'
+                : 'border-surface-lighter text-text-secondary hover:bg-surface-lighter'
+            )}
           >
-            {isPaused ? '继续' : '暂停'}
+            {isPaused ? '▶ 继续' : '⏸ 暂停'}
           </button>
         </div>
       </header>
 
       {/* 主游戏区 */}
       <div className="flex-1 flex overflow-hidden">
-        {/* 左侧线程列表 */}
-        <div className="w-56 flex-shrink-0">
-          {threadPanel}
-        </div>
-
-        {/* 中央对话区 */}
-        <div className="flex-1 flex flex-col border-x border-surface-lighter">
-          <div className="flex-1 overflow-hidden">
-            {dialogPanel}
-          </div>
-          <div className="flex-shrink-0 border-t border-surface-lighter p-3 bg-surface-light max-h-[40%] overflow-y-auto">
+        <div className="w-56 flex-shrink-0">{threadPanel}</div>
+        <div className="flex-1 flex flex-col border-x border-surface-lighter/50">
+          <div className="flex-1 overflow-hidden">{dialogPanel}</div>
+          <div className="flex-shrink-0 border-t border-surface-lighter/50 p-3 bg-surface-light/50 backdrop-blur-sm max-h-[40%] overflow-y-auto">
             {choicePanel}
           </div>
         </div>
-
-        {/* 右侧情报面板 */}
-        <div className="w-60 flex-shrink-0">
-          {intelPanel}
-        </div>
+        <div className="w-60 flex-shrink-0">{intelPanel}</div>
       </div>
 
-      {/* 全屏覆盖层 (地雷效果等) */}
       {overlay}
     </div>
   )

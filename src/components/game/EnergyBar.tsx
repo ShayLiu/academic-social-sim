@@ -14,12 +14,12 @@ export function EnergyBar({ energy, maxEnergy = 100 }: EnergyBarProps) {
   const isCritical = energy <= ENERGY_BREAKDOWN_THRESHOLD
   const isLow = energy <= 50
 
-  const getBarColor = () => {
-    if (energy <= 15) return 'bg-red-600'
-    if (energy <= ENERGY_BREAKDOWN_THRESHOLD) return 'bg-red-500'
-    if (energy <= 50) return 'bg-orange-500'
-    if (energy <= 75) return 'bg-yellow-500'
-    return 'bg-emerald-500'
+  const getGradient = () => {
+    if (energy <= 15) return 'from-red-700 via-red-500 to-red-400'
+    if (energy <= ENERGY_BREAKDOWN_THRESHOLD) return 'from-red-600 via-red-500 to-orange-400'
+    if (energy <= 50) return 'from-orange-600 via-orange-500 to-yellow-400'
+    if (energy <= 75) return 'from-yellow-600 via-yellow-500 to-emerald-400'
+    return 'from-emerald-600 via-emerald-500 to-cyan-400'
   }
 
   const getLabel = () => {
@@ -33,15 +33,18 @@ export function EnergyBar({ energy, maxEnergy = 100 }: EnergyBarProps) {
 
   return (
     <div className="flex items-center gap-3 w-full">
-      <span className="text-xs text-text-secondary whitespace-nowrap min-w-[4rem]">
-        情绪能量
+      <span className="text-[10px] text-text-muted whitespace-nowrap uppercase tracking-wider">
+        能量
       </span>
-      <div className="relative flex-1 h-3 bg-surface-lighter rounded-full overflow-hidden">
+      <div className={cn(
+        'relative flex-1 h-4 rounded-full overflow-hidden',
+        'bg-surface-lighter/50 border border-surface-lighter',
+        isCritical && 'animate-heartbeat border-red-500/50'
+      )}>
         <motion.div
           className={cn(
-            'h-full rounded-full transition-colors duration-500',
-            getBarColor(),
-            isCritical && 'animate-pulse-danger'
+            'h-full rounded-full bg-gradient-to-r',
+            getGradient(),
           )}
           initial={{ width: '100%' }}
           animate={{ width: `${percentage}%` }}
@@ -49,26 +52,25 @@ export function EnergyBar({ energy, maxEnergy = 100 }: EnergyBarProps) {
         />
         {isCritical && (
           <motion.div
-            className="absolute inset-0 rounded-full bg-red-500/30"
-            animate={{ opacity: [0.3, 0.8, 0.3] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
+            className="absolute inset-0 rounded-full bg-red-500/20"
+            animate={{ opacity: [0.2, 0.6, 0.2] }}
+            transition={{ duration: 1, repeat: Infinity }}
           />
         )}
+        <div className="absolute inset-0 rounded-full" style={{
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(0,0,0,0.1) 100%)'
+        }} />
       </div>
-      <span
-        className={cn(
-          'text-xs font-mono min-w-[3rem] text-right',
-          isCritical ? 'text-red-400 animate-heartbeat' : isLow ? 'text-orange-400' : 'text-text-secondary'
-        )}
-      >
-        {energy}/{maxEnergy}
+      <span className={cn(
+        'text-xs font-mono font-bold min-w-[3rem] text-right',
+        isCritical ? 'text-red-400 text-glow-red' : isLow ? 'text-orange-400' : 'text-emerald-400'
+      )}>
+        {energy}
       </span>
-      <span
-        className={cn(
-          'text-xs min-w-[5rem]',
-          isCritical ? 'text-red-400' : isLow ? 'text-orange-400' : 'text-text-muted'
-        )}
-      >
+      <span className={cn(
+        'text-[10px] min-w-[4rem] hidden sm:block',
+        isCritical ? 'text-red-400' : isLow ? 'text-orange-400' : 'text-text-muted'
+      )}>
         {getLabel()}
       </span>
     </div>
