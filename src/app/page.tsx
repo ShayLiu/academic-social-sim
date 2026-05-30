@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { PHASE_LABELS } from '@/types/game'
@@ -23,6 +24,12 @@ const features = [
 ]
 
 export default function HomePage() {
+  const [playCount, setPlayCount] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetch('/api/stats').then(r => r.json()).then(d => setPlayCount(d.count)).catch(() => {})
+  }, [])
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Nav */}
@@ -55,7 +62,6 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            你说的每句话都有人记着，你不知道的事别人都知道
           </motion.p>
         </motion.div>
 
@@ -115,6 +121,11 @@ export default function HomePage() {
             <span>立即挑战</span>
             <span className="text-lg">→</span>
           </Link>
+          {playCount !== null && playCount > 0 && (
+            <p className="text-xs text-text-muted mt-4 font-mono">
+              已有 <span className="text-academic-blue-light">{playCount.toLocaleString()}</span> 次挑战
+            </p>
+          )}
         </motion.div>
       </div>
 
@@ -129,7 +140,7 @@ export default function HomePage() {
           >
             玩法
           </motion.h2>
-          <p className="text-sm text-text-muted text-center mb-12">学术圈的社交不是选择题，是活人跟活人过招</p>
+          <div className="h-4" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {features.map((f, idx) => (
               <motion.div

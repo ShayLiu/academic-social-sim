@@ -117,8 +117,11 @@ export default function PlayPage() {
             <p>在场: {scenario.characters.map((c) => c.name).join('、')}</p>
           </div>
           <button
-            onClick={startGame}
-            className="px-8 py-3 rounded-lg bg-academic-blue hover:bg-academic-blue-light text-white font-medium transition-colors"
+            onClick={() => {
+              fetch('/api/stats', { method: 'POST' }).catch(() => {})
+              startGame()
+            }}
+            className="px-8 py-3 rounded-lg bg-academic-blue hover:bg-academic-blue-light text-white font-medium transition-colors hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]"
           >
             进入场景
           </button>
