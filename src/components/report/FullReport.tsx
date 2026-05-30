@@ -173,45 +173,6 @@ export function FullReport({ result, reportData, onExportPdf }: FullReportProps)
               </div>
             </div>
 
-            {/* 同阶段对比 */}
-            <div className="p-4 rounded-lg bg-surface-light border border-surface-lighter">
-              <h3 className="text-sm font-medium text-text-primary mb-3">📈 同阶段对比</h3>
-              <div className="space-y-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex-1">
-                    <div className="h-3 bg-surface-lighter rounded-full overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${reportData.comparisonData.percentile}%` }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        className="h-full bg-academic-blue rounded-full"
-                      />
-                    </div>
-                    <div className="flex justify-between mt-1">
-                      <span className="text-xs text-text-muted">你的排名</span>
-                      <span className="text-xs text-text-primary font-medium">
-                        前 {100 - reportData.comparisonData.percentile}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="p-2 rounded bg-surface-lighter">
-                    <p className="text-xs text-text-muted">你的分数</p>
-                    <p className="text-sm font-bold text-text-primary">{reportData.comparisonData.playerScore}</p>
-                  </div>
-                  <div className="p-2 rounded bg-surface-lighter">
-                    <p className="text-xs text-text-muted">平均分数</p>
-                    <p className="text-sm font-mono text-text-secondary">{reportData.comparisonData.avgScore}</p>
-                  </div>
-                  <div className="p-2 rounded bg-surface-lighter">
-                    <p className="text-xs text-text-muted">参与人数</p>
-                    <p className="text-sm font-mono text-text-secondary">{reportData.comparisonData.totalPlayers}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* 改进建议 */}
             {reportData.improvementSuggestions.length > 0 && (
               <div className="p-4 rounded-lg bg-surface-light border border-surface-lighter">
