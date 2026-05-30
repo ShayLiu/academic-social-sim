@@ -85,44 +85,32 @@ export class EndingCalculator {
    * 综合考虑一致性、能量、地雷触发比例、信息暴露情况等。
    */
   calculateSurvivalScore(playerState: PlayerState): number {
-    // 一致性权重 30%
-    const consistencyScore = playerState.consistency * 0.3
-
-    // 能量权重 20%
-    const energyScore = playerState.emotionalEnergy * 0.2
-
-    // 地雷触发惩罚权重 25% (触发越少越好)
-    // 没有地雷数据时给满分
-    const mineTriggeredCount = playerState.triggeredMines.length
-    // 假设总数通过外部传入，这里用触发数的反向计算
-    // 每触发一个扣 8 分，最多扣 25 分
-    const mineScore = Math.max(0, 25 - mineTriggeredCount * 8)
-
-    // 矛盾次数惩罚权重 15%
+    const mineCount = playerState.triggeredMines.length
     const contradictionCount = playerState.contradictions.length
-    const contradictionScore = Math.max(0, 15 - contradictionCount * 5)
 
-    // 态度评分权重 10% (friendly +10, neutral +5, wary +2, hostile 0)
+    // 基础分：一致性（0-100 → 0-35分）
+    const consistencyScore = (playerState.consistency / 100) * 35
+
+    // 能量分（0-100 → 0-25分）
+    const energyScore = (playerState.emotionalEnergy / 100) * 25
+
+    // 地雷分：没踩雷满分，每踩一个扣10分（0-20分）
+    const mineScore = Math.max(0, 20 - mineCount * 10)
+
+    // 矛盾分：没矛盾满分，每一个矛盾扣5分（0-10分）
+    const contradictionScore = Math.max(0, 10 - contradictionCount * 5)
+
+    // 态度分：所有角色态度加权（0-10分）
     const attitudeValues: Record<string, number> = {
-      friendly: 10,
-      neutral: 5,
-      wary: 2,
-      hostile: 0,
+      friendly: 10, neutral: 6, wary: 3, hostile: 0,
     }
     const attitudes = Object.values(playerState.attitudes)
-    const attitudeAvg =
-      attitudes.length > 0
-        ? attitudes.reduce(
-            (sum, att) => sum + (attitudeValues[att] ?? 0),
-            0
-          ) / attitudes.length
-        : 5
+    const attitudeAvg = attitudes.length > 0
+      ? attitudes.reduce((sum, att) => sum + (attitudeValues[att] ?? 0), 0) / attitudes.length
+      : 5
     const attitudeScore = attitudeAvg
 
-    const total = Math.round(
-      consistencyScore + energyScore + mineScore + contradictionScore + attitudeScore
-    )
-
+    const total = Math.round(consistencyScore + energyScore + mineScore + contradictionScore + attitudeScore)
     return Math.max(0, Math.min(100, total))
   }
 

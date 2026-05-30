@@ -318,6 +318,11 @@ export const useGameStore = create<GameState>((set, get) => ({
       try {
         sessionStorage.setItem('lastGameResult', JSON.stringify(result))
         sessionStorage.setItem('lastGameScenario', JSON.stringify(scenario))
+        fetch('/api/stats/scores', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scenarioId: scenario.id, score: result.survivalScore }),
+        }).catch(() => {})
       } catch {}
     }
   },

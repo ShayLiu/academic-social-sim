@@ -388,62 +388,32 @@ function calculateStats(
   result: ScenarioResult
 ): ReportData['stats'] {
   const totalChoices = playerState.dialogHistory?.length || 0
-  const avgEnergyPerChoice = totalChoices > 0 
-    ? Math.round((100 - result.energyFinal) / totalChoices * 10) / 10 
+  const avgEnergyPerChoice = totalChoices > 0
+    ? Math.round((100 - result.energyFinal) / totalChoices * 10) / 10
     : 0
-
-  // 这些需要更详细的追踪，目前用估算
-  const riskyChoices = Math.floor(totalChoices * 0.3)
-  const safeChoices = Math.floor(totalChoices * 0.5)
-  const breakdownChoices = result.energyFinal < 30 ? Math.floor(totalChoices * 0.1) : 0
 
   return {
     totalChoices,
     avgEnergyPerChoice,
-    riskyChoices,
-    safeChoices,
-    breakdownChoices,
+    riskyChoices: 0,
+    safeChoices: 0,
+    breakdownChoices: 0,
   }
 }
 
 function generateComparisonData(result: ScenarioResult): ComparisonData {
-  // 在实际应用中，这些数据应该从数据库获取
-  // 这里使用模拟数据，但会根据玩家分数进行合理调整
+  // 对比数据需要从 /api/stats/scores 获取真实数据
+  // 这里先用玩家自己的分数做基准，不编造假数据
   const playerScore = result.survivalScore
-  
-  // 根据阶段生成不同的基准数据
-  const phaseMultipliers: Record<string, number> = {
-    undergrad: 1.0,
-    masters: 0.95,
-    phd: 0.9,
-    postdoc: 0.85,
-    faculty: 0.8,
-  }
-  
-  const multiplier = phaseMultipliers[result.endingId.split('-')[0]] || 1.0
-  
-  // 平均分通常在50-60之间
-  const avgScore = Math.round(55 * multiplier)
-  
-  // 玩家百分比排名
-  let percentile = 50
-  if (playerScore >= 90) percentile = 95
-  else if (playerScore >= 80) percentile = 85
-  else if (playerScore >= 70) percentile = 75
-  else if (playerScore >= 60) percentile = 65
-  else if (playerScore >= 50) percentile = 50
-  else if (playerScore >= 40) percentile = 35
-  else if (playerScore >= 30) percentile = 20
-  else percentile = 10
 
   return {
-    avgScore,
+    avgScore: 0,
     playerScore,
-    percentile,
-    totalPlayers: 1247 + Math.floor(Math.random() * 500),
+    percentile: 0,
+    totalPlayers: 0,
     phaseStats: {
-      avgScore,
-      topScore: Math.min(100, Math.round(avgScore * 1.6)),
+      avgScore: 0,
+      topScore: 0,
     },
   }
 }
