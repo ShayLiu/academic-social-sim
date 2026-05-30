@@ -354,10 +354,11 @@ export class GameEngine {
       this.endingCalculator.calculateSurvivalScore(playerState)
     const impressionSummary =
       this.endingCalculator.generateImpressionSummary(ending, playerState)
-    const behindEvaluations = this.reviewGenerator.generateReviews(
-      playerState,
-      this.scenario.characters
-    )
+
+    // 优先用场景自带的身后评价模板
+    const behindEvaluations = this.scenario.behindEvaluationTemplates.length > 0
+      ? this.scenario.behindEvaluationTemplates
+      : this.reviewGenerator.generateReviews(playerState, this.scenario.characters)
 
     return {
       endingId: ending.id,
